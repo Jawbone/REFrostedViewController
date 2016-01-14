@@ -93,10 +93,9 @@
  5/3/2013
  */
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-#import <CoreImage/CoreImage.h>
-#import <Accelerate/Accelerate.h>
+@import QuartzCore;
+@import CoreImage;
+@import Accelerate;
 
 @interface UIImage (REFrostedViewController)
 

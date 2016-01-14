@@ -64,7 +64,10 @@
     }
     
     self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    self.containerView.clipsToBounds = YES;
+
+    // JB: Allowing box shadow to pass through
+    //self.containerView.clipsToBounds = YES;
+
     [self.view addSubview:self.containerView];
     
     if (self.frostedViewController.liveBlur) {
@@ -90,31 +93,50 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    if(!self.frostedViewController.visible) {
-        self.backgroundImageView.image = self.screenshotImage;
-        self.backgroundImageView.frame = self.view.bounds;
-        self.frostedViewController.menuViewController.view.frame = self.containerView.bounds;
-        
-        if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
-            [self setContainerFrame:CGRectMake(- self.frostedViewController.calculatedMenuViewSize.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
-        }
-        
-        if (self.frostedViewController.direction == REFrostedViewControllerDirectionRight) {
-            [self setContainerFrame:CGRectMake(self.view.frame.size.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
-        }
-        
-        if (self.frostedViewController.direction == REFrostedViewControllerDirectionTop) {
-            [self setContainerFrame:CGRectMake(0, -self.frostedViewController.calculatedMenuViewSize.height, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
-        }
-        
-        if (self.frostedViewController.direction == REFrostedViewControllerDirectionBottom) {
-            [self setContainerFrame:CGRectMake(0, self.view.frame.size.height, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
-        }
-        
-        if (self.animateApperance)
-            [self show];
-    }
+
+	[self showFrostedViewController];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+
+	// Need to call again since viewWillAppear does not always get called. (FoundByAutomation)
+	[self showFrostedViewController];
+}
+
+- (void)showFrostedViewController
+{
+	if(!self.frostedViewController.visible) {
+		self.backgroundImageView.image = self.screenshotImage;
+		self.backgroundImageView.frame = self.view.bounds;
+		self.frostedViewController.menuViewController.view.frame = self.containerView.bounds;
+
+		if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
+			[self setContainerFrame:CGRectMake(- self.frostedViewController.calculatedMenuViewSize.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
+		}
+
+		if (self.frostedViewController.direction == REFrostedViewControllerDirectionRight) {
+			[self setContainerFrame:CGRectMake(self.view.frame.size.width, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
+		}
+
+		if (self.frostedViewController.direction == REFrostedViewControllerDirectionTop) {
+			[self setContainerFrame:CGRectMake(0, -self.frostedViewController.calculatedMenuViewSize.height, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
+		}
+
+		if (self.frostedViewController.direction == REFrostedViewControllerDirectionBottom) {
+			[self setContainerFrame:CGRectMake(0, self.view.frame.size.height, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
+		}
+
+		if (self.animateApperance) {
+			NSLogUITesting(@"show menu REFrostedContainerViewController viewWillAppear 2/2");
+			[self show];
+		} else {
+			NSLogUITesting(@"show menu animateApperance is false !!!!!!!!!!!!!!!!!!!!!!!!!");
+		}
+	} else {
+		NSLogUITesting(@"show menu We think menu is already visiable!!!!!!!!!!!!!!!!!!!!!!!!!");
+	}
 }
 
 - (void)setContainerFrame:(CGRect)frame
