@@ -64,7 +64,10 @@
     }
     
     self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    self.containerView.clipsToBounds = YES;
+
+	// JB: Allowing box shadow to pass through
+	self.containerView.clipsToBounds = YES;
+
     [self.view addSubview:self.containerView];
     
     if (self.frostedViewController.liveBlur) {
@@ -90,7 +93,20 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+	[self showFrostedViewController];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+
+	// JB: Showing FrostedViewController again since viewWillAppear does not always get called. iOS Bug?
+	[self showFrostedViewController];
+}
+
+- (void)showFrostedViewController
+{
     if(!self.frostedViewController.visible) {
         self.backgroundImageView.image = self.screenshotImage;
         self.backgroundImageView.frame = self.view.bounds;
