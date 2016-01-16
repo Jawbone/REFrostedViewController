@@ -90,20 +90,20 @@
     [self.view addGestureRecognizer:self.frostedViewController.panGestureRecognizer];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-	[self showFrostedViewController];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
-
-	// Need to call again since viewWillAppear does not always get called. (FoundByAutomation)
-	[self showFrostedViewController];
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//
+//	//[self showFrostedViewController];
+//}
+//
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//	[super viewDidAppear:animated];
+//
+//	// Need to call again since viewWillAppear does not always get called. (FoundByAutomation)
+//	//[self showFrostedViewController];
+//}
 
 - (void)showFrostedViewController
 {
@@ -129,7 +129,7 @@
 		}
 
 		if (self.animateApperance) {
-			NSLogUITesting(@"show menu REFrostedContainerViewController viewWillAppear 2/2");
+			NSLogUITesting(@"show menu REFrostedContainerViewController showFrostedViewController");
 			[self show];
 		} else {
 			NSLogUITesting(@"show menu animateApperance is false !!!!!!!!!!!!!!!!!!!!!!!!!");

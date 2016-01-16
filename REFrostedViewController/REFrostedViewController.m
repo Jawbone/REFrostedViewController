@@ -197,6 +197,8 @@
     }
         
     [self re_displayController:self.containerViewController frame:self.contentViewController.view.frame];
+
+	[self.containerViewController showFrostedViewController];
     self.visible = YES;
 }
 
