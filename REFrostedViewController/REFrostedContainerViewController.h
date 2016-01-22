@@ -38,5 +38,6 @@
 - (void)resizeToSize:(CGSize)size;
 - (void)hideWithCompletionHandler:(void(^)(void))completionHandler;
 - (void)refreshBackgroundImage;
+- (void)showFrostedViewController;
 
 @end

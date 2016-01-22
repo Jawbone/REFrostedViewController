@@ -94,20 +94,28 @@
 {
     [super viewWillAppear:animated];
 
-	[self showFrostedViewController];
+	NSLogUITesting(@"show menu REFrostedContainerViewController viewWillAppear 1/1");
+	//[self showFrostedViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 
+	NSLogUITesting(@"show menu REFrostedContainerViewController viewDidAppear 1/1");
+
 	// Need to call again since viewWillAppear does not always get called. (FoundByAutomation)
-	[self showFrostedViewController];
+	//[self showFrostedViewController];
 }
 
 - (void)showFrostedViewController
 {
+	NSLogUITesting(@"show menu REFrostedContainerViewController showFrostedViewController start");
+
 	if(!self.frostedViewController.visible) {
+
+		NSLogUITesting(@"show menu REFrostedContainerViewController showFrostedViewController do something");
+
 		self.backgroundImageView.image = self.screenshotImage;
 		self.backgroundImageView.frame = self.view.bounds;
 		self.frostedViewController.menuViewController.view.frame = self.containerView.bounds;
@@ -129,7 +137,7 @@
 		}
 
 		if (self.animateApperance) {
-			NSLogUITesting(@"show menu REFrostedContainerViewController viewWillAppear 2/2");
+			NSLogUITesting(@"show menu REFrostedContainerViewController showFrostedViewController");
 			[self show];
 		} else {
 			NSLogUITesting(@"show menu animateApperance is false !!!!!!!!!!!!!!!!!!!!!!!!!");
