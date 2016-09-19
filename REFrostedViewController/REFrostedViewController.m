@@ -158,6 +158,17 @@
     [menuViewController didMoveToParentViewController:self];
 }
 
+- (void)setMenuWindow:(UIWindow *)menuWindow
+{
+	// A menuWindow was already in place so remove the containerView from it.
+	if (_menuWindow) {
+		[_containerViewController.view removeFromSuperview];
+		[_containerViewController removeFromParentViewController];
+	}
+	
+	_menuWindow = menuWindow;
+}
+
 - (void)setMenuViewSize:(CGSize)menuViewSize
 {
     _menuViewSize = menuViewSize;
@@ -172,7 +183,7 @@
 }
 
 - (void)presentMenuViewControllerWithAnimatedApperance:(BOOL)animateApperance
-{
+{	
     if ([self.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.delegate respondsToSelector:@selector(frostedViewController:willShowMenuViewController:)]) {
         [self.delegate frostedViewController:self willShowMenuViewController:self.menuViewController];
     }
@@ -195,8 +206,14 @@
         }
         self.containerViewController.screenshotImage = [[self.contentViewController.view re_screenshot] re_applyBlurWithRadius:self.blurRadius tintColor:self.blurTintColor saturationDeltaFactor:self.blurSaturationDeltaFactor maskImage:nil];
     }
-        
-    [self re_displayController:self.containerViewController frame:self.contentViewController.view.frame];
+	
+	UIViewController *parentViewController = self;
+	
+	if(self.menuWindow != nil) {
+		parentViewController = self.menuWindow.rootViewController;
+	}
+	
+    [parentViewController re_displayController:self.containerViewController frame:self.contentViewController.view.frame];
 
 	[self.containerViewController showFrostedViewController];
     self.visible = YES;
@@ -207,10 +224,12 @@
     if (!self.visible) {//when call hide menu before menuViewController added to containerViewController, the menuViewController will never added to containerViewController
         return;
     }
+	
     if (!self.liveBlur) {
         self.containerViewController.screenshotImage = [[self.contentViewController.view re_screenshot] re_applyBlurWithRadius:self.blurRadius tintColor:self.blurTintColor saturationDeltaFactor:self.blurSaturationDeltaFactor maskImage:nil];
         [self.containerViewController refreshBackgroundImage];
     }
+	
     [self.containerViewController hideWithCompletionHandler:completionHandler];
 }
 
