@@ -184,7 +184,7 @@
     };
 	
 	if (self.frostedViewController.menuWindow != nil) {
-		self.frostedViewController.menuWindow.hidden = NO;
+		[self.frostedViewController.menuWindow makeKeyAndVisible];
 	}
 	
     if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
@@ -227,6 +227,7 @@
     void (^completionHandlerBlock)(void) = ^{
 		if (self.frostedViewController.menuWindow != nil) {
 			self.frostedViewController.menuWindow.hidden = YES;
+			[self.frostedViewController.menuWindow resignKeyWindow];
 		}
 		
 		if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didHideMenuViewController:)]) {
