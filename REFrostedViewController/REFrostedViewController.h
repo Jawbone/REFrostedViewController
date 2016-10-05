@@ -66,6 +66,7 @@ typedef NS_ENUM(NSInteger, REFrostedViewControllerLiveBackgroundStyle) {
 @property (weak, readwrite, nonatomic) id<REFrostedViewControllerDelegate> delegate;
 @property (strong, readwrite, nonatomic) UIViewController *contentViewController;
 @property (strong, readwrite, nonatomic) UIViewController *menuViewController;
+@property (strong, readwrite, nonatomic) UIWindow *menuWindow;
 
 - (id)initWithContentViewController:(UIViewController *)contentViewController menuViewController:(UIViewController *)menuViewController;
 - (void)presentMenuViewController;

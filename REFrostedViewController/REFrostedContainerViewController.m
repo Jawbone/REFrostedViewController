@@ -178,11 +178,15 @@
 - (void)show
 {
     void (^completionHandler)(BOOL finished) = ^(BOOL finished) {
-        if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didShowMenuViewController:)]) {
+		if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didShowMenuViewController:)]) {
             [self.frostedViewController.delegate frostedViewController:self.frostedViewController didShowMenuViewController:self.frostedViewController.menuViewController];
         }
     };
-    
+	
+	if (self.frostedViewController.menuWindow != nil) {
+		[self.frostedViewController.menuWindow makeKeyAndVisible];
+	}
+	
     if (self.frostedViewController.direction == REFrostedViewControllerDirectionLeft) {
         [UIView animateWithDuration:self.frostedViewController.animationDuration animations:^{
             [self setContainerFrame:CGRectMake(0, 0, self.frostedViewController.calculatedMenuViewSize.width, self.frostedViewController.calculatedMenuViewSize.height)];
@@ -221,9 +225,15 @@
 - (void)hideWithCompletionHandler:(void(^)(void))completionHandler
 {
     void (^completionHandlerBlock)(void) = ^{
-        if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didHideMenuViewController:)]) {
+		if (self.frostedViewController.menuWindow != nil) {
+			self.frostedViewController.menuWindow.hidden = YES;
+			[self.frostedViewController.menuWindow resignKeyWindow];
+		}
+		
+		if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didHideMenuViewController:)]) {
             [self.frostedViewController.delegate frostedViewController:self.frostedViewController didHideMenuViewController:self.frostedViewController.menuViewController];
         }
+		
         if (completionHandler)
             completionHandler();
     };
