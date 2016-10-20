@@ -36,6 +36,7 @@
 @property (strong, readwrite, nonatomic) NSMutableArray *backgroundViews;
 @property (strong, readwrite, nonatomic) UIView *containerView;
 @property (assign, readwrite, nonatomic) CGPoint containerOrigin;
+@property (strong, readwrite, nonatomic) UIWindow *previousKeyWindow;
 
 @end
 
@@ -184,6 +185,7 @@
     };
 	
 	if (self.frostedViewController.menuWindow != nil) {
+		self.previousKeyWindow = [[UIApplication sharedApplication] keyWindow];
 		[self.frostedViewController.menuWindow makeKeyAndVisible];
 	}
 	
@@ -226,8 +228,13 @@
 {
     void (^completionHandlerBlock)(void) = ^{
 		if (self.frostedViewController.menuWindow != nil) {
+			UIWindow *previousKeyWindow = self.previousKeyWindow;
+			self.previousKeyWindow = nil;
+			[previousKeyWindow makeKeyWindow];
+			
 			self.frostedViewController.menuWindow.hidden = YES;
-			[self.frostedViewController.menuWindow resignKeyWindow];
+			
+			[[previousKeyWindow rootViewController] setNeedsStatusBarAppearanceUpdate];
 		}
 		
 		if ([self.frostedViewController.delegate conformsToProtocol:@protocol(REFrostedViewControllerDelegate)] && [self.frostedViewController.delegate respondsToSelector:@selector(frostedViewController:didHideMenuViewController:)]) {
